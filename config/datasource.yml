@@ -1,0 +1,20 @@
+apiVersion: 1
+
+datasources:
+  - name: Victoria metrics
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://victoriametrics:8428
+    uid: victoriametrics
+  - name: Loki
+    type: loki
+    access: proxy
+    orgId: 1
+    url: http://loki:3100
+    basicAuth: false
+    isDefault: true
+    version: 1
+    editable: false
+    jsonData:
+      maxLines: 5000

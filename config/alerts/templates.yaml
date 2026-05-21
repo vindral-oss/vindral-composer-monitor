@@ -1,0 +1,22 @@
+templates:
+  # <int> organization ID, default = 1
+  - orgID: 1
+    name: slack_alert_firing
+    template: |-
+      {{ .Labels.instance }} is down.
+      <{{ .SilenceURL | safeHtml }}|Silence Alert>
+
+  - orgID: 1
+    name: slack_alert_resolved
+    template: |-
+      {{ .Labels.instance }} is back up again
+
+  - orgID: 1
+    name: slack_message
+    template: |-
+      {{ if gt (len .Alerts.Firing) 0 }}🔥{{ len .Alerts.Firing }} alert(s) firing {{ range .Alerts.Firing }} {{ template "slack_alert_firing" .}} {{ end }} {{ end }} {{ if gt (len .Alerts.Resolved) 0 }} ✅ {{ len .Alerts.Resolved }} alert(s) resolved {{ range .Alerts.Resolved }} {{ template "slack_alert_resolved" .}} {{ end }} {{ end }}
+
+  - orgID: 1
+    name: slack_title
+    template: |-
+      Composer Monitor - {{ .ExternalURL }}

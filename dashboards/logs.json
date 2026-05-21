@@ -1,0 +1,289 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "overview"
+      ],
+      "targetBlank": false,
+      "title": "Overview",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "metrics"
+      ],
+      "targetBlank": false,
+      "title": "Metrics",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "server"
+      ],
+      "targetBlank": false,
+      "title": "Server",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Documentation",
+      "tooltip": "Documentation for logs",
+      "type": "link",
+      "url": "https://composer.docs.vindral.com/docs/logging"
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "gridPos": {
+        "h": 33,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{job=\"composerLogs\", SystemLabel=~\"$composer_systemlabel\", Version=~\"$composer_version\"} !~ \"PerformanceLog\" |= `$composer_log_filter` | regexp `(?P<log_level>Fatal|Error|Warning|Information|Debug)\\s+\\(\\d+\\)\\s+(?P<log_message>.*)` | log_level =~ \"$composer_log_level\" | label_format level=log_level | line_format `[{{.SystemLabel}}] {{.log_message}}`",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Log files",
+      "type": "logs"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": [
+    "logs"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "description": "The System Label set in Composer that uniquely identifies a Composer instance.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "System Label",
+        "multi": true,
+        "name": "composer_systemlabel",
+        "options": [],
+        "query": {
+          "label": "SystemLabel",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"composerLogs\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "description": "Composer version",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Version",
+        "multi": true,
+        "name": "composer_version",
+        "options": [],
+        "query": {
+          "label": "Version",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"composerLogs\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "Critical",
+            "Error",
+            "Warning",
+            "Information"
+          ],
+          "value": [
+            "Fatal",
+            "Error",
+            "Warning",
+            "Information"
+          ]
+        },
+        "description": "Choose log level(s)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log level",
+        "multi": true,
+        "name": "composer_log_level",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": true,
+            "text": "Critical",
+            "value": "Fatal"
+          },
+          {
+            "selected": true,
+            "text": "Error",
+            "value": "Error"
+          },
+          {
+            "selected": true,
+            "text": "Warning",
+            "value": "Warning"
+          },
+          {
+            "selected": true,
+            "text": "Information",
+            "value": "Information"
+          },
+          {
+            "selected": false,
+            "text": "Debug",
+            "value": "Debug"
+          }
+
+        ],
+        "query": "Critical : Fatal, Error, Warning, Information, Debug",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "description": "Filter logs by text",
+        "hide": 0,
+        "label": "Filter",
+        "name": "composer_log_filter",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Logs",
+  "uid": "f3ae9349-94ab-4a36-8d70-813382263518",
+  "version": 15,
+  "weekStart": ""
+}

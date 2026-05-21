@@ -1,0 +1,12 @@
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: composer-monitor-trial-slack
+      receivers:
+        - uid: b6e8520a-15a2-49b9-8f08-a9c311d45729
+          type: slack
+          settings:
+            text: '{{ template "slack_message" . }}'
+            title: '{{ template "slack_title"  . }}'
+            url: '<ENTER SLACK WEBHOOK HERE>'
+          disableResolveMessage: false

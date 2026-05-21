@@ -1,0 +1,64 @@
+volumes:
+  victoria-storage:
+  grafana-storage:
+  loki-storage:
+
+services:
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.138.0
+    command:
+      - "--storageDataPath=/metrics"
+      - "-promscrape.config=/etc/prometheus/prometheus.yml" # Scrape as prom normally does
+      - "-promscrape.config.strictParse=false" # Ignore unknown config
+      - "--httpListenAddr=:8428"
+      - "--retentionPeriod=30d"
+      - "-selfScrapeInterval=10s"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8428:8428"
+    restart: always
+    volumes:
+      - victoria-storage:/metrics
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./composerInstances.yml:/etc/prometheus/composerInstances.yml
+
+  grafana:
+    image: grafana/grafana:12.3.6
+    depends_on:
+      - "victoriametrics"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "3010:3010"
+    environment:
+      - GF_SERVER_HTTP_PORT=3010
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_BASIC_ENABLED=false
+      - GF_AUTH_PROXY_ENABLED=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/overview.json
+    restart: always
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./config/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./config/alerts/:/etc/grafana/provisioning/alerting/
+      - ./dashboards:/etc/grafana/provisioning/dashboards
+
+  loki:
+    image: grafana/loki:3.7.0
+    restart: always
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - "loki-storage:/loki" # Volume for persisting data across container restarts
+      - "./config/loki.yml:/etc/loki/local-config.yaml"
+
+  # Optional: Start with: docker compose --profile server up
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.8.2
+    network_mode: host
+    restart: always
+    profiles: ["server"]

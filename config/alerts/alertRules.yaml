@@ -1,0 +1,139 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: Metrics
+      folder: AlertRules
+      interval: 1m
+      rules:
+        - uid: c1a7070f-3fdd-4066-9d96-91168f82645a
+          title: Composer instance down
+          condition: B
+          data:
+            - refId: composer_target_status
+              relativeTimeRange:
+                from: 10800
+                to: 0
+              datasourceUid: victoriametrics
+              model:
+                datasource:
+                    type: prometheus
+                    uid: victoriametrics
+                disableTextWrap: false
+                editorMode: code
+                exemplar: false
+                expr: sum by(instance) (up{instance!~".*:9100"})
+                format: table
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                interval: ""
+                intervalMs: 15000
+                maxDataPoints: 43200
+                range: false
+                refId: composer_target_status
+                useBackend: false
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: composer_target_status
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          dashboardUid: e46dbdc8-a4c3-4020-a098-e8aa2e8022cf
+          panelId: 4
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: e46dbdc8-a4c3-4020-a098-e8aa2e8022cf
+            __panelId__: "4"
+            description: A Composer instance, specified in composerInstances.yml, is not responding
+            summary: A Composer instance ({{ index $labels "instance" }}) is not responding
+          labels:
+            AlertType: metrics
+          isPaused: false
+        - uid: f2f34f37-32d9-45dd-839f-17bc543f6638
+          title: Server instance down
+          condition: D
+          data:
+            - refId: server_instance_query
+              relativeTimeRange:
+                from: 10800
+                to: 0
+              datasourceUid: victoriametrics
+              model:
+                datasource:
+                    type: prometheus
+                    uid: victoriametrics
+                editorMode: code
+                exemplar: false
+                expr: sum(up{instance =~".*:9100"}) by (instance)
+                format: table
+                instant: true
+                interval: ""
+                intervalMs: 15000
+                maxDataPoints: 43200
+                range: false
+                refId: server_instance_query
+            - refId: D
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: server_instance_query
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: e46dbdc8-a4c3-4020-a098-e8aa2e8022cf
+          panelId: 5
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: e46dbdc8-a4c3-4020-a098-e8aa2e8022cf
+            __panelId__: "5"
+            description: A server instance, specified in composerInstances.yml, is not responding
+            summary: A server instance ({{ index $labels "instance" }}) is not responding
+          labels:
+            AlertType: metrics
+          isPaused: false

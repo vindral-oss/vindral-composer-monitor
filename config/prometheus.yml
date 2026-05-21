@@ -1,0 +1,8 @@
+scrape_configs:
+  - job_name: scraper
+    scrape_interval: 10s
+    tls_config:
+      insecure_skip_verify: true
+    file_sd_configs:
+      - files:
+        - "/etc/prometheus/composerInstances.yml" # Specify instances to gather metrics from here
