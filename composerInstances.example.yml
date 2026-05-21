@@ -1,4 +1,4 @@
 - targets: [
   "http://host.docker.internal:8015",   # Gather composer metrics from this host.
-  "http://host.docker.internal:9100",   # Gather server metrics from this host. Must start node exporter with --profile server
+  "http://host.docker.internal:9100",   # Gather server metrics from this host. Must run docker compose with --profile server to enable.
 ]
