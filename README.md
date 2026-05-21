@@ -10,6 +10,17 @@ The setup is divided into three parts:
 
 Copy `composerInstances.example.yml` to `composerInstances.yml` and add your Composer instances.
 
+### Linux: Firewall
+
+On Linux, containers are blocked from connecting to host ports by default. If any targets in `composerInstances.yml` are on localhost (e.g. `host.docker.internal:8015`), allow the monitoring network through once:
+
+For example, for UFW:
+```bash
+sudo ufw allow from 172.28.0.0/16
+```
+
+This is not required if all Composer instances are on remote machines.
+
 ## Logs
 
 Enable sending logs in Composer:

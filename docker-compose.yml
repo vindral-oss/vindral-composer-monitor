@@ -3,6 +3,14 @@ volumes:
   grafana-storage:
   loki-storage:
 
+networks:
+  monitoring:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
+
 services:
   victoriametrics:
     image: victoriametrics/victoria-metrics:v1.138.0
@@ -15,6 +23,8 @@ services:
       - "-selfScrapeInterval=10s"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring
     ports:
       - "8428:8428"
     restart: always
@@ -29,6 +39,8 @@ services:
       - "victoriametrics"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring
     ports:
       - "3010:3010"
     environment:
@@ -49,6 +61,8 @@ services:
   loki:
     image: grafana/loki:3.7.0
     restart: always
+    networks:
+      - monitoring
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
