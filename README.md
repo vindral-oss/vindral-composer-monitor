@@ -10,8 +10,6 @@ The setup is divided into three parts:
 
 Copy `composerInstances.example.yml` to `composerInstances.yml` and add your Composer instances.
 
-This is not required if all Composer instances are on remote machines.
-
 ## Logs
 
 Enable sending logs in Composer:
