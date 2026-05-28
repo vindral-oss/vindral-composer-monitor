@@ -79,6 +79,10 @@
   "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "type": "grafana",
+        "uid": "-- Mixed --"
+      },
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -94,10 +98,6 @@
         "alertInstanceLabelFilter": "",
         "alertName": "",
         "dashboardAlerts": false,
-        "folder": {
-          "title": "AlertRules",
-          "uid": "efmpqv1u8xz40c"
-        },
         "groupBy": [],
         "groupMode": "default",
         "maxItems": 20,
