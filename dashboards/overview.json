@@ -79,9 +79,9 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
@@ -96,7 +96,7 @@
         "dashboardAlerts": false,
         "folder": {
           "title": "AlertRules",
-          "uid": "e1d4ab31-79a1-49b9-98a3-52b5a6e56fad"
+          "uid": "efmpqv1u8xz40c"
         },
         "groupBy": [],
         "groupMode": "default",
