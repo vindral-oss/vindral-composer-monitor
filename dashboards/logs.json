@@ -72,7 +72,7 @@
       "title": "Documentation",
       "tooltip": "Documentation for logs",
       "type": "link",
-      "url": "https://composer.docs.vindral.com/docs/logging"
+      "url": "https://composer-docs.vindral.com/composer-monitor/composer-monitor-overview.html"
     }
   ],
   "liveNow": false,
