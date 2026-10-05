@@ -73,7 +73,7 @@
       "title": "Documentation",
       "tooltip": "View documentation for this dashboard",
       "type": "link",
-      "url": "https://composer.docs.vindral.com/docs/instance-overview"
+      "url": "https://composer-docs.vindral.com/composer-monitor/composer-monitor-overview.html"
     }
   ],
   "liveNow": false,

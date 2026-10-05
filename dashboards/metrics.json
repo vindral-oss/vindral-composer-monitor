@@ -79,7 +79,7 @@
       "title": "Documentation",
       "tooltip": "Documentation for metrics",
       "type": "link",
-      "url": "https://composer.docs.vindral.com/docs/metrics"
+      "url": "https://composer-docs.vindral.com/composer-monitor/composer-monitor-extended-prometheus-metrics.html"
     }
   ],
   "panels": [
